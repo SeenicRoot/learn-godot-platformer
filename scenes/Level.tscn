@@ -1,4 +1,12 @@
-[gd_scene format=2]
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="RectangleShape2D" id=1]
 
 [node name="Level" type="Node2D"]
-position = Vector2( -250, -112 )
+
+[node name="Floor" type="Area2D" parent="."]
+scale = Vector2( 0.993113, 1.0088 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
+scale = Vector2( 26.08, 1 )
+shape = SubResource( 1 )
