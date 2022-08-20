@@ -1,6 +1,7 @@
 extends KinematicBody2D
 
 var movementSpeed : int = 300
+var crouchingSpeed : int = 100
 var jumpForce : int = 600
 var gravity : int = 800
 
@@ -10,14 +11,20 @@ onready var animatedSprite : AnimatedSprite = get_node("AnimatedSprite")
 
 #func built in KinematicBody2D that gives 60 FPS
 func _physics_process(delta):
-	
+
 	velocity.x = 0
 	if Input.is_action_pressed("move_left"):
 		animatedSprite.animation = "walk"
 		velocity.x -= movementSpeed
+	if Input.is_action_just_released("move_left"):
+		animatedSprite.animation = "stand"
+		velocity.x -= 0
 	if Input.is_action_pressed("move_right"):
 		animatedSprite.animation = "walk"
 		velocity.x += movementSpeed
+	if Input.is_action_just_released("move_right"):
+		animatedSprite.animation = "stand"
+		velocity.x += 0
 		
 	#applying velocity
 	velocity = move_and_slide(velocity, Vector2.UP)
@@ -32,6 +39,8 @@ func _physics_process(delta):
 	#crouch
 	if Input.is_action_pressed("duck"):
 		animatedSprite.animation = "duck"
+		if Input.is_action_pressed("move_right") or Input.is_action_pressed("move_left"):
+			velocity.x = crouchingSpeed
 	if Input.is_action_just_released("duck"):
 		animatedSprite.animation = "stand"
 	
