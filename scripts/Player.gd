@@ -1,30 +1,43 @@
 extends KinematicBody2D
 
-var movementSpeed : int = 300
-var crouchingSpeed : int = 100
-var jumpForce : int = 600
+var movement_speed : int = 300
+var crouching_speed : int = 50
+var jump_force : int = 600
 var gravity : int = 800
 
 var velocity : Vector2 = Vector2()
 
-onready var animatedSprite : AnimatedSprite = get_node("AnimatedSprite")
+onready var animated_sprite : AnimatedSprite = get_node("AnimatedSprite")
 
 #func built in KinematicBody2D that gives 60 FPS
 func _physics_process(delta):
 
 	velocity.x = 0
+	#crouch
+	if Input.is_action_pressed("duck"):
+		animated_sprite.animation = "duck"
+	if Input.is_action_pressed("duck") and Input.is_action_pressed("move_left"):
+		animated_sprite.animation = "duck"
+		velocity.x -= crouching_speed
+	if Input.is_action_pressed("duck") and Input.is_action_pressed("move_right"):
+		animated_sprite.animation = "duck"
+		velocity.x += crouching_speed
+	if Input.is_action_pressed("duck"):
+		animated_sprite.animation = "duck"
+	if Input.is_action_just_released("duck"):
+		animated_sprite.animation = "stand"
 	if Input.is_action_pressed("move_left"):
-		animatedSprite.animation = "walk"
-		velocity.x -= movementSpeed
+		animated_sprite.animation = "walk"
+		velocity.x -= movement_speed
 	if Input.is_action_just_released("move_left"):
-		animatedSprite.animation = "stand"
-		velocity.x -= 0
+		animated_sprite.animation = "stand"
+		velocity.x = 0
 	if Input.is_action_pressed("move_right"):
-		animatedSprite.animation = "walk"
-		velocity.x += movementSpeed
+		animated_sprite.animation = "walk"
+		velocity.x += movement_speed
 	if Input.is_action_just_released("move_right"):
-		animatedSprite.animation = "stand"
-		velocity.x += 0
+		animated_sprite.animation = "stand"
+		velocity.x = 0
 		
 	#applying velocity
 	velocity = move_and_slide(velocity, Vector2.UP)
@@ -34,19 +47,10 @@ func _physics_process(delta):
 #
 #	#jump key
 	if Input.is_action_just_pressed("jump") and is_on_floor():
-		velocity.y -= jumpForce
+		velocity.y -= jump_force
 		
-	#crouch
-	if Input.is_action_pressed("duck"):
-		animatedSprite.animation = "duck"
-		if Input.is_action_pressed("move_right") or Input.is_action_pressed("move_left"):
-			velocity.x = crouchingSpeed
-	if Input.is_action_just_released("duck"):
-		animatedSprite.animation = "stand"
-	
-	
 	#sprite direction
 	if velocity.x < 0:
-		animatedSprite.flip_h = true
+		animated_sprite.flip_h = true
 	elif velocity.x > 0:
-		animatedSprite.flip_h = false
+		animated_sprite.flip_h = false
