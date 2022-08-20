@@ -42,6 +42,8 @@ func _move_left():
 			velocity.x -= ducking_speed
 		elif is_airborne:
 			animated_sprite.animation = "stand"
+			if is_on_floor():
+				is_airborne = false
 	elif Input.is_action_just_released("move_left"):
 		animated_sprite.animation = "stand"
 		velocity.x = 0
@@ -56,6 +58,8 @@ func _move_right():
 			velocity.x += ducking_speed
 		elif is_airborne:
 			animated_sprite.animation = "stand"
+			if is_on_floor():
+				is_airborne = false
 	elif Input.is_action_just_released("move_right"):
 		animated_sprite.animation = "stand"
 		velocity.x = 0
