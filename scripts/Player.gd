@@ -23,11 +23,11 @@ func _physics_process(delta):
 	velocity = move_and_slide(velocity, Vector2.UP)
 	
 #	#applying gravity (delta is time duration between each frame (1/60))
-#	velocity.y += gravity * delta
+	velocity.y += gravity * delta
 #
 #	#jump key
-#	if Input.is_action_just_pressed("jump") and is_on_floor():
-#		velocity.y -= jumpForce
+	if Input.is_action_just_pressed("jump") and is_on_floor():
+		velocity.y -= jumpForce
 		
 	#crouch
 	if Input.is_action_pressed("duck"):
